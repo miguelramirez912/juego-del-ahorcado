@@ -11,6 +11,9 @@ const addWordContainer = document.querySelector('#agregar-palabra');
 const addWordButton = document.querySelector('#agregar-palabra-btn');
 const giveUpButton = document.querySelector('#desistir');
 
+var heightRatio = 1;
+canvas.height = canvas.width * heightRatio;
+
 // variables globales
 let chosenWord = '';
 let winCount = 0;
@@ -20,7 +23,6 @@ let categorias = {
     paises: ['mexico', 'colombia', 'argentina', 'alemania', 'francia', 'korea', 'india', 'egipto', 'sudafrica', 'australia'],
     animales: ['leon', 'ballena', 'aguila', 'perro', 'cocodrilo', 'jirafa', 'hipopotamo', 'zebra', 'elefante', 'jaguar'],
     frutas: ['pera', 'naranja', 'guayaba', 'mango', 'mandarina', 'manzana', 'platano', 'fresa', 'uva', 'kiwi'],
-    libros: ['pera', 'naranja', 'guayaba', 'mango', 'mandarina', 'manzana', 'platano', 'fresa', 'uva', 'kiwi']
 }
 
 const getRandomCategory = (obj) => {
@@ -95,6 +97,8 @@ const createLetters = () => {
 }
 
 const canvasCreator = () => {
+    // let heightRatio = 1;
+    // canvas.height = canvas.width * heightRatio;
     let pincel = canvas.getContext("2d");
     pincel.beginPath();
     pincel.strokeStyle = '#0A3871';
