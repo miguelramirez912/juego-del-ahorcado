@@ -7,7 +7,9 @@ const canvas = document.querySelector('canvas');
 const lettersContainer = document.querySelector('#letter-container');
 const wordContainer = document.querySelector('#word-container');
 const resultContainer = document.querySelector('#result-container');
-// const newGameButtonResult = document.querySelector('#juego-nuevo-result');
+const addWordContainer = document.querySelector('#agregar-palabra');
+const addWordButton = document.querySelector('#agregar-palabra-btn');
+const giveUpButton = document.querySelector('#desistir');
 
 // variables globales
 let chosenWord = '';
@@ -17,31 +19,30 @@ let loseCount = 0;
 let categorias = {
     paises: ['mexico', 'colombia', 'argentina', 'alemania', 'francia', 'korea', 'india', 'egipto', 'sudafrica', 'australia'],
     animales: ['leon', 'ballena', 'aguila', 'perro', 'cocodrilo', 'jirafa', 'hipopotamo', 'zebra', 'elefante', 'jaguar'],
-    frutas: ['pera', 'naranja', 'guayaba', 'mango', 'mandarina', 'manzana', 'platano', 'fresa', 'uva', 'kiwi']
+    frutas: ['pera', 'naranja', 'guayaba', 'mango', 'mandarina', 'manzana', 'platano', 'fresa', 'uva', 'kiwi'],
+    libros: ['pera', 'naranja', 'guayaba', 'mango', 'mandarina', 'manzana', 'platano', 'fresa', 'uva', 'kiwi']
 }
 
 const getRandomCategory = (obj) => {
     let categories = Object.keys(obj);
     let randomCategory = categories[Math.floor(Math.random() * categories.length)];
-    let selectedCategory = categorias[randomCategory];
-    return selectedCategory;
+    return randomCategory;
 }
 
 const getRandomWord = (category) => {
-    let word = category[Math.floor(Math.random() * category.length)];
+    let selectedCategory = categorias[category];
+    let word = selectedCategory[Math.floor(Math.random() * category.length)]
     return word;
 }
 const pushLetter = (e) => {
-    console.log(e.target.innerText);
+    // console.log(e.target.innerText);
     e.target.disabled = true;
     e.target.classList.add('disabled');
     let chars = chosenWord.split('');
     
-    // console.log(chars);
-    
     if (chars.includes(e.target.innerText)) {
         // si esta agregar a contador win y reemplazar el dash por la letra
-        console.log('Si esta')
+        // console.log('Si esta')
         let dashes = document.querySelectorAll('.dashes');
         // console.log(dashes);
         chars.forEach((char, index) => {
@@ -61,7 +62,7 @@ const pushLetter = (e) => {
                     resultContainer.innerHTML = `
                         <h3 class="result-win">Ganaste!!!</h3>
                         <div class="game-buttons">
-                            <button class="btn-primario" onclick=startGame()>Juego nuevo</button>
+                            <button class="btn-primario" onclick=startGame(event)>Juego nuevo</button>
                             <button class="btn-secundario" onclick=goToStart()>Inicio</button>
                         </div>`;
                 }, 1500
@@ -77,17 +78,7 @@ const pushLetter = (e) => {
         if (loseCount == 6) {
             console.log('Perdiste')
             setTimeout(() => {
-                gameContainer.classList.add('hide');
-                resultContainer.classList.remove('hide')
-                resultContainer.innerHTML = `
-                    <h3 class="result-lose">Perdiste!!!</h3>
-                    <p>La palabra era <span> ${chosenWord} </span></p>
-                    <div class="game-buttons">
-                        <button class="btn-primario" onclick=startGame()>Juego nuevo</button>
-                        <button class="btn-secundario" onclick=goToStart()>Inicio</button>
-                    </div>
-                    `
-                
+                handleLosing()
                 }, 1500)
         }
         
@@ -172,20 +163,36 @@ const drawMan = (count) => {
     }
 }
 const goToStart = () => {
-    // resultContainer.style.display = 'none';
-    newGameContainer.style.display = 'flex';
+    resultContainer.classList.add('hide');
+    addWordContainer.classList.add('hide');
+    newGameContainer.classList.remove('hide');
+    gameContainer.classList.add('hide');
 }
-const startGame = () => {
-    console.log('Iniciar Juego');
-    newGameContainer.style.display = 'none';
+const saveWord = (category) => {
+    categorias[category].push(chosenWord.toLowerCase());
+    console.log(categorias);
+}
+const startGame = (e) => {
+    newGameContainer.classList.add('hide');
     gameContainer.classList.remove('hide');
-    // resultContainer.style.display = 'none';
+    resultContainer.classList.add('hide');
+    addWordContainer.classList.add('hide');
+    resultContainer.innerHTML = '';
     lettersContainer.innerHTML = '';
     winCount = 0;
     loseCount = 0;
-    let category = getRandomCategory(categorias);
-    chosenWord = getRandomWord(category).toUpperCase();
-    // console.log(chosenWord);
+    console.log(e.target.innerText);
+    if (e.target.innerText === 'Guardar y jugar') {
+        chosenWord = document.querySelector('#input-word').value.toUpperCase();
+        console.log(document.querySelector('#category-options').value);
+        let category = document.querySelector('#category-options').value
+        saveWord(category);
+        categoryTitle.innerText = category;
+    } else {
+        let category = getRandomCategory(categorias);
+        chosenWord = getRandomWord(category).toUpperCase();
+        categoryTitle.innerText = category;
+    }
     createLetters();
     let displayWord = chosenWord.replace(/[A-Z]/g, '<span class="dashes">_</span>');
     wordContainer.innerHTML = displayWord;
@@ -193,7 +200,49 @@ const startGame = () => {
     initialDrawing();
 }
 
+const handleLosing = () => {
+    gameContainer.classList.add('hide');
+                resultContainer.classList.remove('hide')
+                resultContainer.innerHTML = `
+                    <h3 class="result-lose">Perdiste!!!</h3>
+                    <p>La palabra era <span> ${chosenWord} </span></p>
+                    <div class="game-buttons">
+                        <button class="btn-primario" onclick=startGame(event)>Juego nuevo</button>
+                        <button class="btn-secundario" onclick=goToStart()>Inicio</button>
+                    </div>
+                    `
+}
+
+//Agregar palabra
+
+const createCategoryOptions = () => {
+    for (const category in categorias) {
+        document.querySelector('#category-options').innerHTML += `<option>${category}</option>`
+    }
+}
+
+const handleAddWord = () => {
+    newGameContainer.classList.add('hide');
+    addWordContainer.innerHTML = `
+        <h2>Agrega una nueva palabra</h2>
+        <label>Categoria:
+            <select id="category-options">
+            </select>
+        </label>
+        <input type="text" id="input-word">
+        <div class="game-buttons">
+            <button class="btn-primario" onclick=startGame(event)>Guardar y jugar</button>
+            <button class="btn-secundario" onclick=goToStart()>Cancelar</button>
+        </div>
+    `
+    addWordContainer.classList.remove('hide');
+    createCategoryOptions();
+    
+}
+
 // Eventos
 startGameButton.addEventListener('click', startGame);
 newGameButton.addEventListener('click', startGame);
+addWordButton.addEventListener('click', handleAddWord);
+giveUpButton.addEventListener('click', handleLosing);
 

@@ -15,7 +15,7 @@ button{
     border: 1px solid var(--color-secundario);
     border-radius: 1rem;
     font-family: inherit;
-    padding: 1rem 3rem;
+    /* padding: 1rem 3rem; */
     width: 14rem;
     height: 3rem;
     cursor: pointer;
@@ -51,7 +51,7 @@ body{
 }
 
 /* Inicio */
-#inicio {
+.inicio {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -63,11 +63,11 @@ body{
 #iniciar-juego{
     height: 5rem;
 }
-#agregar-palabra{
+/* #agregar-palabra{
     width: 13rem;
     height: 3rem;
     padding: 0;
-}
+} */
 
 /* Juego */
 .game {
@@ -85,6 +85,8 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
 }
 /* canvas {
     border: 1px solid black;
@@ -140,11 +142,43 @@ body{
     word-spacing: 10px;
 
 }
+/* Agregar palabra */
+.agregar-palabra {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+    height: 100%;
+}
+
+.agregar-palabra select {
+    font: inherit;
+    background-color: var(--color-secundario);
+    color: var(--color-pricipal);
+    border: none;
+    border-radius: 5px;
+    padding: .5rem .5rem;
+    margin-left: 1rem;
+}
+.agregar-palabra input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px double lightslategray;
+    outline: none;
+    font: inherit;
+    font-size: 2rem;
+    color: var(--color-secundario);
+    text-align: center;
+    padding: .5rem;
+}
+
 .hide {
     display: none;
 }
 
-@media (min-width: 350px) {
+@media (max-width: 350px) {
     
     .container {
         width: 95vw;

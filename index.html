@@ -9,9 +9,10 @@
 </head>
 <body>
     <div class="container">
-        <div id="inicio">
+        <div id="inicio" class="inicio">
+            <h1>Juego del Ahorcado</h1>
             <button class="btn-primario" id="iniciar-juego">Iniciar juego</button>
-            <button class="btn-secundario" id="agregar-palabra">Agregar nueva palabra</button>
+            <button class="btn-secundario" id="agregar-palabra-btn">Agrega nueva palabra.</button>
         </div>
         <div class="game hide" id="game">
             <h2>Categoria</h2>
@@ -20,10 +21,12 @@
             <div id="letter-container"></div>
             <div class="game-buttons">
                 <button class="btn-primario" id="juego-nuevo">Juego nuevo</button>
-                <button class="btn-secundario">Desistir</button>
+                <button class="btn-secundario" id="desistir">Desistir</button>
             </div>
         </div>
         <div class="result-container hide" id="result-container">
+        </div>
+        <div class="agregar-palabra hide" id="agregar-palabra">
         </div>
     </div>
     <script src="./script.js"></script>
