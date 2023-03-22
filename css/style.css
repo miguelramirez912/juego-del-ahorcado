@@ -15,7 +15,6 @@ button{
     border: 1px solid var(--color-secundario);
     border-radius: 1rem;
     font-family: inherit;
-    /* padding: 1rem 3rem; */
     width: 14rem;
     height: 3rem;
     cursor: pointer;
@@ -63,11 +62,6 @@ body{
 #iniciar-juego{
     height: 5rem;
 }
-/* #agregar-palabra{
-    width: 13rem;
-    height: 3rem;
-    padding: 0;
-} */
 
 /* Juego */
 .game {
@@ -88,14 +82,7 @@ body{
     gap: 2rem;
     margin-top: 1.5rem;
 }
-/* canvas {
-    border: 1px solid black;
-    border-radius: 5px;
-} */
-/* canvas {
-    width: 300;
-    height: 300;
-} */
+
 #letter-container {
     display: flex;
     flex-wrap: wrap;
@@ -148,6 +135,11 @@ body{
 }
 /* Agregar palabra */
 .agregar-palabra {
+    width: 100%;
+    height: 100%;
+}
+
+.agregar-palabra-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -178,8 +170,17 @@ body{
     padding: .5rem;
 }
 
+.agregar-palabra-error {
+    color: orangered;
+    height: 19px;
+}
+
 .hide {
     display: none;
+}
+
+.disabled-btn {
+    opacity: 0.5;
 }
 
 @media (max-width: 850px) {
