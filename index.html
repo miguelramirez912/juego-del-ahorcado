@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ahorcado</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
     <div class="container">
@@ -14,7 +14,7 @@
             <button class="btn-primario" id="iniciar-juego">Iniciar juego</button>
             <button class="btn-secundario" id="agregar-palabra-btn">Agrega nueva palabra.</button>
         </div>
-        <div class="game hide" id="game">
+        <div class="game hide" id="game" tabindex="0">
             <h2>Categoria</h2>
             <canvas></canvas>
             <div id="word-container"></div>
@@ -25,10 +25,29 @@
             </div>
         </div>
         <div class="result-container hide" id="result-container">
+            <div class="game-buttons" id="result-game-buttons">
+                <button class="btn-primario">Juego nuevo</button>
+                <button class="btn-secundario" id="btn-inicio">Inicio</button>
+            </div>
         </div>
         <div class="agregar-palabra hide" id="agregar-palabra">
+            <form class="agregar-palabra-form" id="agregar-palabra-form">
+                <h2>Agrega una nueva palabra</h2>
+                <label for="category-options">Elige una categoria:
+                    <select id="category-options">
+                    </select>
+                </label>
+                <input type="text" id="input-word">
+                <span class="agregar-palabra-error" id="agregar-palabra-error"></span>
+                <div class="game-buttons">
+                    <button class="btn-primario" id="guardar-palabra">Guardar y jugar</button>
+                    <!-- <input type="submit" class="btn-primario" id="guardar-palabra" value="Guardar y jugar"/> -->
+                    <button class="btn-secundario" id="cancelar-btn">Cancelar</button>
+                </div>
+            </form>
         </div>
     </div>
-    <script src="./script.js"></script>
+    <!-- <script type="module" src="./js/canvas.js"></script> -->
+    <script type="module" src="./js/script.js"></script>
 </body>
 </html>
