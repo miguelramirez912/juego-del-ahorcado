@@ -20,6 +20,7 @@ let chosenWord = '';
 let winCount = 0;
 let loseCount = 0;
 let categorias;
+let isFirstGame = true;
 
 const getRandomCategory = (obj) => {
     let categories = Object.keys(obj);
@@ -34,6 +35,7 @@ const getRandomWord = (category) => {
 }
 const pushLetter = (button) => {
     console.log("pushLetter ejecutado. Tecla oprimida: " + button.innerText);
+    
     if (!button.disabled) {
         button.disabled = true;
         button.classList.add('disabled');
@@ -49,14 +51,7 @@ const pushLetter = (button) => {
             if (winCount == chars.length) {
                 setTimeout(
                     () => {
-                        gameContainer.classList.add('hide');
-                        resultContainer.classList.remove('hide');
-                        const resultMessage = document.createElement("div");
-                        resultMessage.innerHTML = `<h3 class="result-win">Ganaste!!!</h3>`;
-                        resultMessage.setAttribute("id", "result-message");
-                        const buttons = document.querySelector('#result-game-buttons');
-                        buttons.insertAdjacentElement('beforebegin', resultMessage);
-
+                        handleWining();
                     }, 1500
                 );
             }
@@ -71,8 +66,10 @@ const pushLetter = (button) => {
 
         }
     }
+    //console.log("Correctas: " + winCount + ", incorrectas: " + loseCount);
     gameContainer.focus();
 }
+
 
 const createLetters = () => {
     for (let i = 65; i < 91; i++) {
@@ -80,19 +77,13 @@ const createLetters = () => {
         button.classList.add('letters');
         button.innerText = String.fromCharCode(i);
         button.addEventListener('click', () => pushLetter(button));
-        
-        let timer;
-        gameContainer.addEventListener('keydown', () => {
-            console.log("Evento keydown disparado");
+        const handleKeyUp = () => {
+            //console.log("Evento keyup disparado------------------------>");
             if(button.innerText.charCodeAt(0) == event.keyCode){
-                if (timer) {
-                    clearTimeout(timer);
-                }
-                timer = setTimeout(() => {
-                    pushLetter(button);
-                }, 250);
+                pushLetter(button);    
             }
-        });
+        }
+        gameContainer.addEventListener('keyup', handleKeyUp);
         lettersContainer.append(button);
     }
 }
@@ -122,13 +113,21 @@ const startGame = (e) => {
     if(resultMessage){
         resultContainer.removeChild(resultMessage);
     }
-    lettersContainer.innerHTML = '';
+    const buttonLetters = document.querySelectorAll(".letters");
+    //console.log("Numero de letras creadas: " + buttonLetters.length);
+    if(buttonLetters.length > 0){
+        buttonLetters.forEach(button => {
+            button.disabled = false;
+            button.classList.remove("disabled");
+        })
+    }
+    console.log(buttonLetters);
     winCount = 0;
     loseCount = 0;
     if (e.target.innerText === 'Guardar y jugar') {
         e.preventDefault();
-        chosenWord = document.querySelector('#input-word').value.toUpperCase();
         let category = document.querySelector('#category-options').value
+        chosenWord = document.querySelector('#input-word').value.toUpperCase();
         saveWord(category.toLowerCase());
         categoryTitle.innerText = category;
     } else {
@@ -136,7 +135,10 @@ const startGame = (e) => {
         chosenWord = getRandomWord(category).toUpperCase();
         categoryTitle.innerText = category.toUpperCase();
     }
-    createLetters();
+    if(isFirstGame){
+        createLetters();
+    }
+    
     let displayWord = chosenWord.replace(/[A-Z]/g, '<span class="dashes">_</span>');
     wordContainer.innerHTML = displayWord;
     const { initialDrawing } = canvasCreator();
@@ -154,6 +156,18 @@ const handleLosing = () => {
     `;
     const buttons = document.querySelector('#result-game-buttons');
     buttons.insertAdjacentElement('beforebegin', resultMessage);
+    isFirstGame = false;
+}
+
+const handleWining = () => {
+    gameContainer.classList.add('hide');
+    resultContainer.classList.remove('hide');
+    const resultMessage = document.createElement("div");
+    resultMessage.innerHTML = `<h3 class="result-win">Ganaste!!!</h3>`;
+    resultMessage.setAttribute("id", "result-message");
+    const buttons = document.querySelector('#result-game-buttons');
+    buttons.insertAdjacentElement('beforebegin', resultMessage);
+    isFirstGame = false;
 }
 
 // Obtener y guardar datos del Local Storage
